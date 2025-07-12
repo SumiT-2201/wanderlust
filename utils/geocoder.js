@@ -1,8 +1,9 @@
-// utils/geocoder.js
-const NodeGeocoder = require('node-geocoder');
+const NodeGeocoder = require("node-geocoder");
 
 const options = {
-  provider: 'openstreetmap',
+  provider: "locationiq",
+  apiKey: process.env.LOCATIONIQ_KEY,
+  formatter: null,
 };
 
 const geocoder = NodeGeocoder(options);

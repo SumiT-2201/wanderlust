@@ -33,47 +33,36 @@ module.exports.ShowListing = async (req, res) => {
 };
 
 // map by me
-module.exports.createListing = async (req, res) => {
-  // 1. Geocode the location from the form
+   module.exports.createListing = async (req, res) => {
+  // 1. Geocode location using LocationIQ
   const geoData = await geocoder.geocode(req.body.listing.location);
+  const coordinates = [geoData[0].longitude, geoData[0].latitude];
 
-  if (!geoData || geoData.length === 0) {
-    req.flash("error", "Location not found.");
-    return res.redirect("/listings/new");
-  }
-
-  // 2. Create the listing with location and image
+  // 2. Create new listing and assign geolocation
   const newListing = new Listing(req.body.listing);
-
   newListing.geometry = {
     type: "Point",
-    coordinates: [geoData[0].longitude, geoData[0].latitude],
+    coordinates: coordinates
   };
 
-  newListing.owner = req.user._id;
-
+  // 3. Handle image upload (Cloudinary)
   if (req.file) {
     newListing.image = {
       url: req.file.path,
-      filename: req.file.filename,
+      filename: req.file.filename
     };
   }
 
-  // 3. Save to DB and redirect
-  // await newListing.save();
-  // req.flash("success", "New Listing Created!");
-  // res.redirect(`/listings/${newListing._id}`);
-
-  let url = req.file.path;
-  let filename = req.file.filename;
+  // 4. Set current user as owner
   newListing.owner = req.user._id;
-  newListing.image = { url, filename };
 
-  let savedListing = await newListing.save();
+  // 5. Save and redirect
+  const savedListing = await newListing.save();
   console.log(savedListing);
   req.flash("success", "New Listing Created!");
-  res.redirect("/listings");
+  res.redirect(`/listings/${savedListing._id}`);
 };
+
 
 module.exports.renderEditForm = async (req, res) => {
   let { id } = req.params;

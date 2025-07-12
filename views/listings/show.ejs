@@ -116,39 +116,39 @@
 <% } %>
 </div>
 
+
+<!-- MAP SECTION -->
 <div class="col-8 offset-3 mb-3">
   <h3>Where you'll be</h3>
 </div>
 
-<div id="map"></div>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> -->
-  <script>
-    const map = L.map('map').setView([28.6139, 77.2090], 13); // Delhi coordinates
+<!-- MAP CONTAINER -->
+<div id="map" style="height: 400px; border-radius: 10px;"></div>
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-    }).addTo(map);
-  </script>
-  <script src="/js/map.js"></script>
-
-<!-- <div id="map" style="height: 400px; width: 100%; border-radius: 10px;"></div>
-
-<!-- <% if (listing.geometry && listing.geometry.coordinates) { %>
-  <script>
-    const listingCoordinates = [<%= listing.geometry.coordinates[1] %>, <%= listing.geometry.coordinates[0] %>]; // [lat, lng]
-    const listingTitle = "<%= listing.title.replace(/\"/g, '&quot;') %>";
-    const listingLocation = "<%= listing.location.replace(/\"/g, '&quot;') %>";
-  </script>
-<% } else { %>
-  <p class="text-danger">⚠️ Location data not found. Please check geocoding.</p>
-<% } %>
+<!-- GLOBAL VARIABLES for map.js -->
+<script>
+  const listingCoordinates = [
+    <%- JSON.stringify(listing.geometry.coordinates[1]) %>,  // latitude
+    <%- JSON.stringify(listing.geometry.coordinates[0]) %>   // longitude
+  ];
+  const listingTitle = <%- JSON.stringify(listing.title) %>;
+  const listingLocation = <%- JSON.stringify(listing.location) %>;
+</script>
 
 
-  Leaflet
+<!-- LEAFLET CSS & JS -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet/dist/leaflet.css"
+/>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-Your custom script
-<script src="/js/map.js"></script> -->
+<!-- YOUR CUSTOM JS FILE THAT USES THE VARIABLES ABOVE -->
+<script src="/js/map.js"></script>
+
+
+
+
 
 
 
